@@ -45,6 +45,7 @@ export class EntryEditorComponent implements OnInit {
     });
   }
 
+  //TODO: === Typeahead with Client-side Filtering ===
   // locationsSearch = (text$: Observable<string>) =>
   //   text$.pipe(
   //     debounceTime(200),
@@ -53,13 +54,16 @@ export class EntryEditorComponent implements OnInit {
   //       : this.locations.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
   //   );
 
+  //TODO ==> Typeahead with Server-side Filtering ===
   locationsSearch = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
+      //* ^ ^ ^ == Nothing will happen until at least 200ms has passed without the user typing anything
+
       tap(() => this.loading = true),
       switchMap(term => this.api.searchLocations(term)),
-      map(locations => _.map(locations, 'name')),
+      map(locations => _.map(locations, 'name')), //! ==> Use only string from object {id,name}
       tap(() => this.loading = false)
     );
 
